@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="he">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>הטמעת סרטון מיוטיוב לפי קישור</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            padding: 50px;
+            background-color: #f4f4f9;
+        }
+        input[type="text"] {
+            width: 70%;
+            padding: 10px;
+            font-size: 16px;
+            margin-bottom: 20px;
+        }
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        #videoContainer {
+            margin-top: 20px;
+        }
+        iframe {
+            width: 100%;
+            height: 400px;
+        }
+        #errorMessage {
+            color: red;
+            font-size: 16px;
+        }
+    </style></head>
+<body>
+    <h1>הטמעת סרטון מיוטיוב לפי קישור</h1>
+    <input type="text" id="youtubeUrl" placeholder="הכנס קישור מיוטיוב">
+    <button onclick="embedVideo()">הצג סרטון</button>
+    <div id="errorMessage"></div>
+    <div id="videoContainer"></div>
+
+    <script>
+        // פונקציה להטמעת הסרטון
+        function embedVideo() {
+            var url = document.getElementById('youtubeUrl').value;
+            var videoContainer = document.getElementById('videoContainer');
+            var errorMessage = document.getElementById('errorMessage');
+            errorMessage.innerHTML = '';  // ניקוי הודעות שגיאה קודמות
+
+            var videoId = getYouTubeVideoId(url);
+
+            if (videoId) {
+                videoContainer.innerHTML = '<iframe src="https://www.youtube.com/embed/' + videoId + '" frameborder="0" allowfullscreen></iframe>';
+            } else {
+                errorMessage.innerHTML = 'קישור לא תקין. נא הכנס קישור תקין מיוטיוב.';
+            }
+        }
+
+        // פונקציה לזיהוי מזהה הסרטון מתוך URL
+        function getYouTubeVideoId(url) {
+            var regex = /(?:https?:\/\/)?(?:www\.)?(?:youtube\.com\/(?:[^\/\n\s]+\/\S+\/|\S*\?v=)|youtu\.be\/)([a-zA-Z0-9_-]{11})/;
+            var match = url.match(regex);
+            return match ? match[1] : null;
+        }</script>
+</body>
+</html>
